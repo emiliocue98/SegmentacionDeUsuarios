@@ -1,7 +1,136 @@
 # SegmentacionDeUsuarios
 Actividad Machine Learning
 
+**Integrantes del equipo:**
+Gloria Janeth Esparza Martinez
+Citlalli Izel Olmedo Paredes
+Emilio Cue Funes
 
+Trabajamos la tarea tambien en Colab porque teniamos problemas con el archivo que estaba muy pesado, por si hay algun problema aqui anexamos el link a la libreta https://colab.research.google.com/drive/10P9wcjQvAar0RfVqy01v9QtyVUESj3bd?usp=sharing#scrollTo=qLqltvwZIR_A
+
+## Instrucciones para correr el proyecto
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/emiliocue98/SegmentacionDeUsuarios.git
+cd SegmentacionDeUsuarios
+```
+
+### 2. Elegir la rama del integrante
+Cada integrante tiene su propia rama con su libreta:
+```bash
+# Ver todas las ramas disponibles
+git branch -a
+
+# Cambiarse a la rama deseada
+git checkout Gloria-Esparza    # Libreta de Gloria Esparza
+git checkout Citlalli-Olmedo   # Libreta de Citlalli Olmedo
+git checkout EmilioCue         # Libreta de Emilio Cue
+```
+
+### 3. Instalar las dependencias
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Descargar el dataset
+```bash
+python download_data.py
+```
+Esto descarga automáticamente el CSV desde Google Drive
+y lo guarda localmente. Puede tardar unos minutos.
+
+### 5. Verificar que el dataset se descargó
+```bash
+ls -lh product.csv
+```
+Debe aparecer un archivo de aproximadamente 1.2 GB.
+
+### 6. Abrir y correr la libreta
+Abre el archivo `libreta.ipynb` y ejecuta todas las 
+celdas en orden de arriba hacia abajo.
+
+- Celda por celda: `Ctrl + Enter`
+- Todas de una vez: botón **Run All** en la parte superior
+
+---
+
+> ⚠️ **Notas importantes:**
+> - El archivo CSV no está en el repositorio porque pesa
+>   1.2 GB. Siempre descárgalo con `python download_data.py`
+> - Cada rama tiene la libreta de un integrante diferente
+> - No mezclar cambios entre ramas
+
+**Actividad 3** 
+**3.1 Clustering con K-means**
+
+**Parámetros usados en K-means**
+Se aplicó el algoritmo K means utilizando un número de clusters previamente determinado, con el objetivo de segmentar los datos en grupos homogéneos. Se empleó el método de inicialización k means plus plus, el cual mejora la selección inicial de los centroides y favorece una mejor convergencia del modelo. Asimismo, se configuró un máximo de 300 iteraciones para asegurar que el algoritmo tuviera suficientes oportunidades de estabilizar los centroides. Se utilizaron múltiples inicializaciones mediante el parámetro n init, lo que permite ejecutar el algoritmo varias veces con diferentes puntos de partida y seleccionar la mejor solución en función de la menor inercia. Además, se estableció una semilla aleatoria mediante random state para garantizar la reproducibilidad de los resultados. Estos parámetros en conjunto permiten obtener una segmentación más robusta, evitando soluciones subóptimas y mejorando la calidad del agrupamiento.
+
+La inercia final obtenida fue de 211253.46, lo cual representa la suma de las distancias cuadradas de cada punto a su centroide más cercano, es decir, el grado de compactación de los clusters. Este valor indica qué tan agrupados se encuentran los datos dentro de cada cluster; a menor inercia, mayor cohesión interna. En este caso, la inercia refleja un nivel adecuado de agrupamiento considerando la complejidad y dimensionalidad del conjunto de datos, aunque su interpretación debe complementarse con otras métricas como el silhouette score y el índice de Davies Bouldin para evaluar de manera más integral la calidad del modelo.
+
+**Tabla de centroides**
+total_interactions	total_clicks	total_purchases	click_to_purchase_ratio	mobile_percentage	desktop_percentage	avg_time_between_events_hours	unique_products_viewed	unique_products_purchased	show_to_click_ratio	days_active	conversion_rate
+Cluster 0	-0.059604	-0.440829	-0.265914	-0.173023	-0.226885	0.226885	3.988241	-0.454685	-0.270591	-0.395368	0.087195	-0.246684
+Cluster 1	0.611676	-0.437125	3.405780	-0.137546	-0.906959	0.906959	0.475173	-0.450628	3.471594	-0.389022	0.838634	4.024631
+Cluster 2	0.234288	1.506724	-0.265914	-0.173023	0.390879	-0.390879	-0.104441	1.628751	-0.270591	2.053028	-0.112323	-0.246684
+Cluster 3	-0.406645	-0.470194	-0.265914	-0.173023	-1.462951	1.462951	-0.209299	-0.486851	-0.270591	-0.425975	-0.342576	-0.246684
+Cluster 4	-0.327495	-0.470293	-0.265914	-0.173023	0.681669	-0.681669	-0.224347	-0.486959	-0.270591	-0.425975	-0.256087	-0.246684
+Cluster 5	1.746904	1.905778	3.488204	4.717300	0.052112	-0.052112	0.093234	1.912020	3.543276	1.351284	1.509180	2.340884
+Cluster 6	2.667764	1.959915	-0.262472	-0.173023	0.528634	-0.528634	0.085294	1.897387	-0.266991	0.310076	2.495427	-0.245790
+
+El análisis de los centroides obtenidos mediante el algoritmo K means permitió identificar distintos perfiles de comportamiento entre los usuarios. Se observa que los clusters 5 y 1 representan a los usuarios de mayor valor, destacando especialmente el cluster 5 por sus altos niveles de interacción, clics, compras y conversión, lo que indica un alto grado de compromiso con la plataforma. Por otro lado, los clusters 2 y 6 agrupan usuarios con alta actividad reflejada en un elevado número de clics, productos vistos y días activos pero con baja conversión, lo que sugiere oportunidades de mejora en estrategias de persuasión o experiencia de usuario. En contraste, los clusters 0, 3 y 4 corresponden a usuarios con baja interacción, escaso nivel de compras y menor participación general, considerados como segmentos pasivos o de bajo impacto. Los resultados evidencian una segmentación clara que permite identificar tanto a los usuarios más rentables como a aquellos que requieren estrategias específicas para incrementar su nivel de engagement y conversión.
+
+**Métricas de calidad**
+Métricas de calidad (silhouette, intra/inter-cluster distance, Davies-Bouldin)
+
+Silhouette Score: 0.619851679518303
+Intra-cluster distance (Inercia): 211253.45727269168
+Distancias entre centroides: [7.74678423 5.63629339 4.58072435 4.42597891 9.69642504 6.43476665
+ 8.03418393 7.01807925 7.30422636 6.65133933 8.28642734 4.6773507
+ 3.87943881 8.0726424  4.01392308 3.03525335 9.30362016 6.13658535
+ 9.06212159 5.3682342  7.90910696]
+Davies-Bouldin Index: 0.8828982121995878
+
+**Visualización de clusters**
+Los clusters presentan en general una buena separación en el espacio reducido mediante PCA, lo que indica que el modelo K means logró identificar grupos con características diferenciadas. Se observan clusters claramente definidos, particularmente en las regiones derecha inferior del gráfico, donde la distancia entre grupos es mayor. No obstante, existe cierto grado de solapamiento en la zona izquierda, lo que sugiere que algunos usuarios comparten características similares y podrían no estar completamente diferenciados. En conjunto, la segmentación es adecuada, aunque con áreas donde la separación entre clusters podría mejorarse.
+
+**Tabla de distribución de usuarios por cluster**
+Número de usuarios	Porcentaje (%)
+0	2747	3.608823
+1	2776	3.646921
+2	9904	13.011206
+3	18563	24.386815
+4	35468	46.595462
+5	2673	3.511607
+6	3988	5.239165
+
+**Parámetro de bandwidth usado y justificación**
+Debido al tamaño del dataset (200,000 observaciones), se utilizó una muestra aleatoria de 10,000 datos para estimar el parámetro bandwidth, reduciendo el costo computacional sin afectar significativamente la representatividad de los resultados.
+
+El parámetro bandwidth fue estimado utilizando la función estimate bandwidth con distintos valores de quantile (0.2, 0.3 y 0.4). Se seleccionó el valor correspondiente a quantile = 0.3, obteniendo un bandwidth de aproximadamente 2.94, ya que proporciona un equilibrio adecuado entre la cantidad de clusters generados y la separación entre los mismos, evitando tanto la sobresegmentación como la generalización excesiva de los datos.
+
+**Número de clusters encontrados automáticamente**
+Según la muestra, el algoritmo Mean Shift identificó un total de 36 clusters, lo cual es significativamente mayor en comparación con los 7 clusters obtenidos mediante K means. Esto indica que Mean Shift es más sensible a la densidad de los datos y tiende a generar una segmentación más detallada, identificando subgrupos dentro de los clusters principales.
+
+**Métricas de calidad**
+Se obtuvo un silhouette score de 0.46, lo que indica una separación moderada entre los clusters, inferior a la obtenida con K means, sugiriendo una menor claridad en la delimitación de los grupos. La distancia intra cluster fue de 44502.21, reflejando una buena compactación interna considerando el alto número de clusters generados. Por otro lado, las distancias inter cluster presentan una amplia variabilidad, con valores que van desde distancias pequeñas hasta separaciones considerablemente grandes, lo que indica que algunos clusters están bien diferenciados mientras que otros se encuentran más cercanos entre sí. El índice de Davies Bouldin de 0.71, al ser menor a 1, indica un buen desempeño del modelo en términos de cohesión y separación.
+
+**Comparativa inicial: K-means vs Mean-Shift**
+Mean Shift encontró más clusters que el valor de k seleccionado en K means, ya que identificó 36 clusters frente a los 7 definidos previamente. Esto evidencia que Mean Shift es más sensible a la densidad de los datos y tiende a generar una segmentación más detallada, detectando subgrupos dentro de los clusters principales.
+La distribución de usuarios por cluster obtenida mediante Mean Shift evidencia una alta concentración en pocos grupos principales, destacando el cluster 0 que agrupa el 74% del total.
+En cuanto a la comparación observada por las gráficas, los clusters obtenidos son más fragmentados y menos homogéneos que los de K means, presentando formas irregulares y una mayor dispersión. Aunque algunas regiones del espacio coinciden con las agrupaciones generales identificadas por K means, en general los resultados son más granulares y diferentes, lo que podría ofrecer mayor detalle pero dificulta su interpretación y aplicación práctica.
+
+**3.3 Clustering con DBSCAN**
+**K-distance graph con eps elegido**
+En este caso, el codo se ubicó aproximadamente en un valor de 0.4, por lo que se seleccionó eps = 0.4 como el parámetro óptimo. Este valor permite un adecuado equilibrio entre la formación de clusters y la detección de ruido, evitando tanto la sobreagrupación como la fragmentación excesiva de los datos.
+
+**Parámetros usados**
+eps=0.4
+
+Número de clusters encontrados
+**% de usuarios clasificados como ruido**
+Los usuarios clasificados como ruido por DBSCAN corresponden principalmente a datos atípicos, ya que presentan comportamientos distintos al resto y no se agrupan en regiones de alta densidad. Estos usuarios se caracterizan por patrones irregulares o extremos en sus interacciones, lo que los separa de los clusters principales. Aunque es más probable que representen anomalías dentro del dataset, no se descarta que algunos puedan corresponder a bots, usuarios nuevos o comportamientos poco comunes.
 
 **Actividad 4** 
 **4.1 - Matriz Comparativa**
