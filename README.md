@@ -66,8 +66,11 @@ git checkout EmilioCue
 >   1.2 GB. Siempre descárgalo con `python download_data.py`
 > - Cada libreta es independiente y contiene el trabajo
 >   de cada integrante
+
 **Actividad 1** 
+
 **1.1 Análisis Exploratorio (EDA)**
+
 1. Resumen general
 Número total de eventos (interacciones): 8,471,220 (aunque el análisis actual se basa en un subconjunto de 200,000 interacciones debido a product_df = product1_df.head(200000).copy()). Para el product_df actual es 200,000.
 Número de usuarios únicos: 76,119
@@ -89,7 +92,9 @@ company
 5. Problemas Identificados
 Valores Faltantes: No se encontraron valores faltantes en ninguna columna del product_df (No hay valores faltantes en el DataFrame.).
 Anomalías: No se identificaron anomalías evidentes en los datos numéricos (target) ni en las distribuciones de las columnas categóricas durante el análisis exploratorio inicial.
+
 **1.2 Ingeniería de características**
+
 Durante la fase de ingeniería de características, se crearon diversas variables para capturar diferentes aspectos del comportamiento del usuario, con el objetivo de construir perfiles más ricos y discriminatorios para el clustering:
 total_interactions: Representa el número total de eventos (interacciones) de un usuario en la plataforma. Es un indicador clave del nivel general de actividad y engagement del usuario.
 total_clicks: Mide el número total de clics en banners (banner_click) realizados por un usuario. Esta característica ayuda a identificar usuarios más activos y propensos a explorar productos.
@@ -113,23 +118,33 @@ Número Final de Características y Usuarios en la Matriz
 Número final de características: 12 (excluyendo el user_id)
 Número de usuarios: 76,119
 La matriz utilizada para el clustering (X_scaled_df) tiene, por lo tanto, una forma de (76119, 12).
+
 **Actividad 2** 
+
 **2.1 Método del codo (elbow method)**
+
 "El "codo" de la gráfica se localiza claramente en:
 k=4 
 En este valor, la curva experimenta su cambio de dirección más brusco antes de entrar en una fase de rendimientos decrecientes.
 Valor de  k  Recomendado
 Recomendación principal:  k=4 .
 Es el punto de equilibrio óptimo entre la cohesión de los grupos y la simplicidad del modelo.
+
 **2.2 Silhouette Score**
+
 Silhouette Score: El Silhouette Score más alto se obtuvo con k = 8.
+
 **2.3 Davies-Bouldin Index**
+
 Davies-Bouldin Index: El Davies-Bouldin Index más bajo se obtuvo con k = 7.
+
 **2.4 Decisión final sobre k**
+
 Entre los tres, el Silhouette Score y el Davies-Bouldin Index son generalmente más confiables que el Método del Codo, ya que proporcionan una medida cuantitativa de la calidad del agrupamiento, reduciendo la subjetividad.
 Considerando que el Silhouette Score sugiere k=8 y el Davies-Bouldin Index sugiere k=7, es común ver ligeras variaciones entre ellos.
 El Davies-Bouldin Index de 7 es el valor más bajo, indicando la mejor separación de clústeres.
 El valor de k que se usara en los algoritmos de clustering es: k = 7.
+
 **Actividad 3** 
 **3.1 Clustering con K-means**
 
