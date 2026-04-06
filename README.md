@@ -73,50 +73,85 @@ git checkout EmilioCue
 
 1. Resumen general
 Número total de eventos (interacciones): 8,471,220 (aunque el análisis actual se basa en un subconjunto de 200,000 interacciones debido a product_df = product1_df.head(200000).copy()). Para el product_df actual es 200,000.
+
 Número de usuarios únicos: 76,119
+
 Número de productos únicos: 125 (se calculará en la celda anterior).
+
 2. Distribución de Eventos por Tipo (title)
+
 La distribución de tipos de eventos (title) muestra las siguientes frecuencias:
 
 banner_show: Mayoría de las interacciones, lo que sugiere que muchos usuarios ven banners sin hacer clic.
+
 banner_click: Un número significativo de clics en banners.
+
 order: Un menor número de eventos de compra, lo cual es esperable ya que la conversión suele ser menor que las interacciones de visualización o clic.
+
 Otros tipos de eventos: También se observan otras interacciones como view, add_to_cart, etc., pero con menor frecuencia.
+
 3. Distribución por Versión del Sitio (site_version)
+
 La proporción entre desktop y mobile es aproximadamente 54.1% desktop y 45.9% mobile, lo que indica una base de usuarios considerable en ambas plataformas, con una ligera preferencia por desktop.
+
 4. Productos Más Populares
+
 Los 3 productos más populares son:
+
 sneakers
+
 sport_nutrition
+
 company
+
 5. Problemas Identificados
+
 Valores Faltantes: No se encontraron valores faltantes en ninguna columna del product_df (No hay valores faltantes en el DataFrame.).
+
 Anomalías: No se identificaron anomalías evidentes en los datos numéricos (target) ni en las distribuciones de las columnas categóricas durante el análisis exploratorio inicial.
 
 **1.2 Ingeniería de características**
 
 Durante la fase de ingeniería de características, se crearon diversas variables para capturar diferentes aspectos del comportamiento del usuario, con el objetivo de construir perfiles más ricos y discriminatorios para el clustering:
+
 total_interactions: Representa el número total de eventos (interacciones) de un usuario en la plataforma. Es un indicador clave del nivel general de actividad y engagement del usuario.
+
 total_clicks: Mide el número total de clics en banners (banner_click) realizados por un usuario. Esta característica ayuda a identificar usuarios más activos y propensos a explorar productos.
+
 total_purchases: Indica el número total de órdenes (order) completadas por un usuario. Es una métrica directa de la propensión a la compra y el valor transaccional del usuario.
+
 click_to_purchase_ratio: Esta proporción (total_clicks / total_purchases) mide la eficiencia con la que los clics de un usuario se traducen en compras. Un ratio bajo podría indicar que el usuario es indeciso o encuentra fricción en el proceso de compra, mientras que un ratio alto (donde total_purchases > 0) podría indicar un usuario que compra rápidamente después de un clic. Se maneja total_purchases = 0 para evitar divisiones por cero.
+
 mobile_percentage: Porcentaje de eventos (total_events) que un usuario realiza desde la versión móvil del sitio. Esta característica ayuda a segmentar usuarios según su plataforma preferida de interacción.
+
 desktop_percentage: Porcentaje de eventos (total_events) que un usuario realiza desde la versión de escritorio del sitio. Complementa la característica mobile_percentage para entender las preferencias de dispositivo del usuario.
+
 avg_time_between_events_hours: El tiempo promedio (en horas) entre dos eventos consecutivos de un mismo usuario. Esta característica puede revelar patrones de uso, como usuarios que interactúan esporádicamente (largos intervalos) o aquellos que tienen sesiones de uso intensivo y continuado (cortos intervalos).
+
 unique_products_viewed: Número de productos únicos en los que un usuario hizo clic (banner_click). Esta métrica refleja la diversidad de intereses del usuario o su tendencia a explorar un amplio catálogo.
+
 unique_products_purchased: Número de productos únicos que un usuario compró (order). Similar a la anterior, pero enfocada en la diversidad de productos que finalmente adquiere el usuario.
+
 show_to_click_ratio: Proporción de total_clicks sobre total_shows (banner_show). Mide la efectividad de los banners para generar clics después de ser mostrados. Un ratio alto indica mayor engagement con los banners.
+
 days_active: Número de días distintos en los que un usuario ha interactuado con la plataforma. Esta característica es un indicador de la recurrencia y lealtad del usuario a lo largo del tiempo.
+
 conversion_rate: Tasa de conversión de un usuario, calculada como total_purchases / total_interactions. Mide la efectividad general del usuario para realizar una compra en relación con todas sus interacciones.
 
 Se utilizó el escalado de características (StandardScaler) antes de aplicar los algoritmos de clustering. Esta decisión se tomó por las siguientes razones:
 
 Diferentes Escalas y Rangos: Las características creadas tienen rangos y escalas muy diferentes (e.g., total_interactions puede ser un número grande, mientras que click_to_purchase_ratio es una proporción). Algoritmos basados en distancias, como K-Means, son sensibles a estas diferencias, lo que podría llevar a que características con rangos más amplios dominen la función de distancia.
+
 Importancia Equitativa: Al estandarizar las características para que tengan una media de 0 y una desviación estándar de 1, se asegura que todas las características contribuyan de manera equitativa al cálculo de la distancia entre los puntos, evitando sesgos hacia características con mayores valores numéricos.
+
 Mejora del Rendimiento: La estandarización generalmente mejora el rendimiento y la convergencia de muchos algoritmos de aprendizaje automático, incluido K-Means.
+
 Número Final de Características y Usuarios en la Matriz
+
 Número final de características: 12 (excluyendo el user_id)
+
 Número de usuarios: 76,119
+
 La matriz utilizada para el clustering (X_scaled_df) tiene, por lo tanto, una forma de (76119, 12).
 
 **Actividad 2** 
