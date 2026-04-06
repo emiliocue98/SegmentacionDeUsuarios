@@ -16,50 +16,56 @@ git clone https://github.com/emiliocue98/SegmentacionDeUsuarios.git
 cd SegmentacionDeUsuarios
 ```
 
-### 2. Elegir la rama del integrante
-Cada integrante tiene su propia rama con su libreta:
-```bash
-# Ver todas las ramas disponibles
-git branch -a
-
-# Cambiarse a la rama deseada
-git checkout Gloria-Esparza    # Libreta de Gloria Esparza
-git checkout Citlalli-Olmedo   # Libreta de Citlalli Olmedo
-git checkout EmilioCue         # Libreta de Emilio Cue
-```
-
-### 3. Instalar las dependencias
+### 2. Instalar las dependencias
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Descargar el dataset
+### 3. Descargar el dataset
 ```bash
 python download_data.py
 ```
 Esto descarga automáticamente el CSV desde Google Drive
 y lo guarda localmente. Puede tardar unos minutos.
 
-### 5. Verificar que el dataset se descargó
+### 4. Verificar que el dataset se descargó
 ```bash
 ls -lh product.csv
 ```
-Debe aparecer un archivo de aproximadamente 1.2 GB.
 
-### 6. Abrir y correr la libreta
-Abre el archivo `libreta.ipynb` y ejecuta todas las 
-celdas en orden de arriba hacia abajo.
+### 5. Abrir la libreta del integrante deseado
+En la rama main encontrarás una libreta por integrante:
+
+| Archivo | Integrante |
+|---------|------------|
+| libreta_gloria.ipynb | Gloria Esparza |
+| libreta_citlalli.ipynb | Citlalli Olmedo |
+| libreta_emilio.ipynb | Emilio Cue |
+
+Abre el archivo y ejecuta todas las celdas en orden
+de arriba hacia abajo.
 
 - Celda por celda: `Ctrl + Enter`
-- Todas de una vez: botón **Run All** en la parte superior
+- Todas de una vez: botón **Run All**
+
+### 6. O puedes ver el trabajo por rama
+```bash
+# Ver todas las ramas
+git branch -a
+
+# Cambiarse a la rama deseada
+git checkout Gloria-Esparza
+git checkout Citlalli-Olmedo
+git checkout EmilioCue
+```
 
 ---
 
 > ⚠️ **Notas importantes:**
 > - El archivo CSV no está en el repositorio porque pesa
 >   1.2 GB. Siempre descárgalo con `python download_data.py`
-> - Cada rama tiene la libreta de un integrante diferente
-> - No mezclar cambios entre ramas
+> - Cada libreta es independiente y contiene el trabajo
+>   de cada integrante
 
 **Actividad 3** 
 **3.1 Clustering con K-means**
